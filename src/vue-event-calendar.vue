@@ -21,14 +21,12 @@ import { isEqualDateStr} from './tools.js'
 
 import calEvents from './components/cal-events.vue'
 import calPanel from './components/cal-panel.vue'
-import calShows from './components/cal-shows.vue'
 
 const inBrowser = typeof window !== 'undefined'
 export default {
   name: 'vue-event-calendar',
   components: {
     'cal-events': calEvents
-    'cal-shows': calShows,
     'cal-panel': calPanel
   },
   data () {
