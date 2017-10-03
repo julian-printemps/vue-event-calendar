@@ -1,6 +1,7 @@
 <template>
   <div class="__vev_calendar-wrapper">
     <cal-panel
+      :shows="shows"
       :events="events"
       :calendar="calendarOptions"
       :selectedDay='selectedDayEvents.date'
@@ -20,12 +21,14 @@ import { isEqualDateStr} from './tools.js'
 
 import calEvents from './components/cal-events.vue'
 import calPanel from './components/cal-panel.vue'
+import calShows from './components/cal-shows.vue'
 
 const inBrowser = typeof window !== 'undefined'
 export default {
   name: 'vue-event-calendar',
   components: {
-    'cal-events': calEvents,
+    'cal-events': calEvents
+    'cal-shows': calShows,
     'cal-panel': calPanel
   },
   data () {
@@ -51,7 +54,9 @@ export default {
         })
         return validate
       }
-    }
+    },
+    shows: Object,
+    nationaldays: Array
   },
   computed: {
     calendarOptions () {

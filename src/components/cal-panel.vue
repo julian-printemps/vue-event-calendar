@@ -5,6 +5,9 @@
       <div class="title">{{curYearMonth}}</div>
       <div class="r" @click="nextMonth"><div class="arrow-right icon">&nbsp</div></div>
     </div>
+    <section class="cal-shows">
+      <h3 class="cal-shows--title">{{shows}}</h3>
+    </section>
     <div class="cal-body">
       <div class="weeks">
         <span
@@ -46,6 +49,7 @@ export default {
     }
   },
   props: {
+    shows: Object,
     events: {
       type: Array,
       required: true
