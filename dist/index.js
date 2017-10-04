@@ -518,6 +518,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -527,12 +528,15 @@ var inBrowser = typeof window !== 'undefined';
   name: 'cal-panel',
   data: function data() {
     return {
+      showsItem: {},
+      showItemIsSet: false,
       i18n: __WEBPACK_IMPORTED_MODULE_0__i18n_js__["a" /* default */]
     };
   },
 
   props: {
     shows: Array,
+    nationaldays: Array,
     events: {
       type: Array,
       required: true
@@ -547,19 +551,6 @@ var inBrowser = typeof window !== 'undefined';
     }
   },
   computed: {
-    showsList: function showsList() {
-      var showsList = [];
-      var tempDate = Date.parse(new Date());
-      var currentMonth = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__tools_js__["b" /* dateTimeFormatter */])(tempDate, 'M');
-      this.shows.forEach(function (show) {
-        if (show.month == currentMonth) {
-          var possibilities = 4 - show.nbscreening;
-          showsList.push(show);
-        }
-      });
-      console.log(showsList);
-      return showsList;
-    },
     dayList: function dayList() {
       var firstDay = new Date(this.calendar.params.curYear, this.calendar.params.curMonth, 1);
       var dayOfWeek = firstDay.getDay();
@@ -592,8 +583,16 @@ var inBrowser = typeof window !== 'undefined';
         };
         this.events.forEach(function (event) {
           if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__tools_js__["a" /* isEqualDateStr */])(event.date, tempItem.date)) {
+            tempItem.isEvent = true;
             tempItem.title = event.title;
             tempItem.desc = event.desc || '';
+          }
+        });
+        this.nationaldays.forEach(function (day) {
+          if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__tools_js__["a" /* isEqualDateStr */])(day.date, tempItem.date)) {
+            tempItem.isNationalday = true;
+            tempItem.title = day.title;
+            tempItem.desc = '';
           }
         });
         tempArr.push(tempItem);
@@ -620,14 +619,31 @@ var inBrowser = typeof window !== 'undefined';
       return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__tools_js__["b" /* dateTimeFormatter */])(tempDate, this.i18n[this.calendar.options.locale].monthFormat);
     }
   },
+  mounted: function mounted() {
+    this.setShowsItem();
+  },
   methods: {
+    setShowsItem: function setShowsItem() {
+      var self = this;
+      self.showItemIsSet = false;
+      var tempDate = Date.parse(new Date(this.calendar.params.curYear + '/' + (this.calendar.params.curMonth + 1) + '/01'));
+      var currentMonth = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__tools_js__["b" /* dateTimeFormatter */])(tempDate, 'M');
+      this.shows.forEach(function (show) {
+        if (show.month == currentMonth) {
+          self.showsItem = show;
+          self.showItemIsSet = true;
+        }
+      });
+    },
     nextMonth: function nextMonth() {
       this.$EventCalendar.nextMonth();
       this.$emit('month-changed', this.curYearMonth);
+      this.setShowsItem();
     },
     preMonth: function preMonth() {
       this.$EventCalendar.preMonth();
       this.$emit('month-changed', this.curYearMonth);
+      this.setShowsItem();
     },
     handleChangeCurday: function handleChangeCurday(date) {
       if (date.status) {
@@ -686,14 +702,40 @@ var inBrowser = typeof window !== 'undefined';
       selectedDayEvents: {
         date: 'all',
         events: this.events || [] //default show all event
-      },
-      shows: [{
-        nbscreening: 2,
-        month: 10
-      }, {
-        nbscreening: 1,
-        month: 10
-      }]
+      }
+
+      // shows: [
+      //   {
+      //     nbscreening: 4,
+      //     month: 8
+      //   },
+      //   {
+      //     nbscreening: 2,
+      //     month: 9
+      //   },
+      //   {
+      //     nbscreening: 1,
+      //     month: 10
+      //   },
+      //   {
+      //     nbscreening: 3,
+      //     month: 11
+      //   },
+      //   {
+      //     nbscreening: 0,
+      //     month: 12
+      //   }
+      // ],
+      // nationaldays: [
+      //   {
+      //     date: '2017/09/12',
+      //     title: 'National day'
+      //   },
+      //   {
+      //     date: '2017/10/10',
+      //     title: 'Bar'
+      //   }
+      // ],
     };
   },
 
@@ -712,8 +754,10 @@ var inBrowser = typeof window !== 'undefined';
         });
         return validate;
       }
+      // }
+
     },
-    // shows: Array,
+    shows: Array,
     nationaldays: Array
   },
   computed: {
@@ -1019,6 +1063,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "shows": _vm.shows,
       "events": _vm.events,
+      "nationaldays": _vm.nationaldays,
       "calendar": _vm.calendarOptions,
       "selectedDay": _vm.selectedDayEvents.date
     },
@@ -1062,13 +1107,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "arrow-right icon"
-  }, [_vm._v(" ")]), _c('span', [_vm._v(_vm._s(_vm.nextMonthDisplay))])])]), _vm._v(" "), _c('ul', {
+  }, [_vm._v(" ")]), _c('span', [_vm._v(_vm._s(_vm.nextMonthDisplay))])])]), _vm._v(" "), (_vm.showItemIsSet) ? _c('section', {
     staticClass: "cal-shows"
-  }, _vm._l((_vm.showsList), function(item) {
-    return _c('li', {
-      staticClass: "cal-shows--item"
-    }, [_vm._v("\n      上映回数"), _c('b', [_vm._v(_vm._s(item.nbscreening) + "回")]), _vm._v(" "), _c('strong', [_vm._v("残り開催可能数"), _c('b', [_vm._v(_vm._s(_vm.screeningPossibilities(item.nbscreening)) + "回")])])])
-  })), _vm._v(" "), _c('div', {
+  }, [_c('h3', {
+    staticClass: "cal-shows--item"
+  }, [_vm._v("\n      上映回数"), _c('b', [_vm._v(_vm._s(_vm.showsItem.nbscreening) + "回")]), _vm._v(" "), _c('strong', [_vm._v("残り開催可能数"), _c('b', [_vm._v(_vm._s(_vm.screeningPossibilities(_vm.showsItem.nbscreening)) + "回")])])])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "cal-body"
   }, [_c('div', {
     staticClass: "weeks"
@@ -1083,7 +1126,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "item",
       class: ( _obj = {
         today: date.status ? (_vm.today == date.date) : false,
-          event: date.status ? (date.title != undefined) : false
+          event: date.status ? (date.isEvent == true) : false,
+          nationalday: date.status ? (date.isNationalday == true) : false
       }, _obj[_vm.calendar.options.className] = (date.date == _vm.selectedDay), _obj )
     }, [_c('p', {
       staticClass: "date-num",

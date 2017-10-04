@@ -22,7 +22,8 @@
         <div v-for="date in dayList" class="item"
           :class="{
             today: date.status ? (today == date.date) : false,
-            event: date.status ? (date.title != undefined) : false,
+            event: date.status ? (date.isEvent == true) : false,
+            nationalday: date.status ? (date.isNationalday == true) : false,
             [calendar.options.className] : (date.date == selectedDay)
           }">
           <p class="date-num"
@@ -54,6 +55,7 @@ export default {
   },
   props: {
     shows: Array,
+    nationaldays: Array,
     events: {
       type: Array,
       required: true
@@ -97,8 +99,16 @@ export default {
             }
             this.events.forEach((event) => {
               if (isEqualDateStr(event.date, tempItem.date)) {
+                tempItem.isEvent = true
                 tempItem.title = event.title
                 tempItem.desc = event.desc || ''
+              }
+            })
+            this.nationaldays.forEach((day) => {
+              if (isEqualDateStr(day.date, tempItem.date)) {
+                tempItem.isNationalday = true
+                tempItem.title = day.title
+                tempItem.desc = ''
               }
             })
             tempArr.push(tempItem)

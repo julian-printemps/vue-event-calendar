@@ -1,7 +1,7 @@
 <template>
   <div class="__vev_calendar-wrapper">
     <cal-panel
-      :shows="shows" :events="events"
+      :shows="shows" :events="events" :nationaldays="nationaldays"
       :calendar="calendarOptions"
       :selectedDay='selectedDayEvents.date'
       @cur-day-changed="handleChangeCurDay"
@@ -34,28 +34,39 @@ export default {
         date: 'all',
         events: this.events || []  //default show all event
       },
-      shows: [
-        {
-          nbscreening: 4,
-          month: 8
-        },
-        {
-          nbscreening: 2,
-          month: 9
-        },
-        {
-          nbscreening: 1,
-          month: 10
-        },
-        {
-          nbscreening: 3,
-          month: 11
-        },
-        {
-          nbscreening: 0,
-          month: 12
-        }
-      ],
+
+      // shows: [
+      //   {
+      //     nbscreening: 4,
+      //     month: 8
+      //   },
+      //   {
+      //     nbscreening: 2,
+      //     month: 9
+      //   },
+      //   {
+      //     nbscreening: 1,
+      //     month: 10
+      //   },
+      //   {
+      //     nbscreening: 3,
+      //     month: 11
+      //   },
+      //   {
+      //     nbscreening: 0,
+      //     month: 12
+      //   }
+      // ],
+      // nationaldays: [
+      //   {
+      //     date: '2017/09/12',
+      //     title: 'National day'
+      //   },
+      //   {
+      //     date: '2017/10/10',
+      //     title: 'Bar'
+      //   }
+      // ],
     }
   },
   props: {
@@ -73,8 +84,9 @@ export default {
         })
         return validate
       }
+    // }
     },
-    // shows: Array,
+    shows: Array,
     nationaldays: Array
   },
   computed: {
