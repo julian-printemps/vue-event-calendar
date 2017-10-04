@@ -27,8 +27,7 @@
             [calendar.options.className] : (date.date == selectedDay)
           }">
           <p class="date-num"
-            @click="handleChangeCurday(date)"
-            :style="{color: date.title != undefined ? ((date.date == selectedDay) ? '#fff' : customColor) : 'inherit'}">
+            @click="handleChangeCurday(date)">
             {{date.status ? date.date.split('/')[2] : '&nbsp'}}</p>
           <span v-if="date.status ? (today == date.date) : false" class="is-today"></span>
           <span v-if="date.status ? (date.isEvent == true) : false" class="is-event"></span>

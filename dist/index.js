@@ -518,7 +518,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -1131,9 +1130,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }, _obj[_vm.calendar.options.className] = (date.date == _vm.selectedDay), _obj )
     }, [_c('p', {
       staticClass: "date-num",
-      style: ({
-        color: date.title != undefined ? ((date.date == _vm.selectedDay) ? '#fff' : _vm.customColor) : 'inherit'
-      }),
       on: {
         "click": function($event) {
           _vm.handleChangeCurday(date)
