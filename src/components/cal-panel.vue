@@ -5,11 +5,11 @@
       <div class="title">{{curYearMonth}}</div>
       <div class="r" @click="nextMonth"><div class="arrow-right icon">&nbsp</div><span>{{nextMonthDisplay}}</span></div>
     </div>
-    <ul class="cal-shows">
-      <li class="cal-shows--item" v-for="item in showsList">
-        上映回数<b>{{ item.nbscreening }}回</b> <strong>残り開催可能数<b>{{ screeningPossibilities(item.nbscreening) }}回</b></strong>
-      </li>
-    </ul>
+    <section class="cal-shows" v-if="showItemIsSet">
+      <h3 class="cal-shows--item">
+        上映回数<b>{{ showsItem.nbscreening }}回</b> <strong>残り開催可能数<b>{{ screeningPossibilities(showsItem.nbscreening) }}回</b></strong>
+      </h3>
+    </section>
     <div class="cal-body">
       <div class="weeks">
         <span
@@ -47,6 +47,8 @@ export default {
   name: 'cal-panel',
   data () {
     return {
+      showsItem: {},
+      showItemIsSet: false,
       i18n
     }
   },
@@ -66,19 +68,6 @@ export default {
     }
   },
   computed: {
-    showsList () {
-      let showsList = []
-      let tempDate = Date.parse(new Date())
-      let currentMonth = dateTimeFormatter(tempDate, 'M')
-      this.shows.forEach((show) => {
-        if (show.month == currentMonth) {
-          let possibilities = 4 - show.nbscreening
-          showsList.push(show)
-        }
-      })
-      console.log(showsList);
-      return showsList
-    },
     dayList () {
         let firstDay = new Date(this.calendar.params.curYear, this.calendar.params.curMonth, 1)
         let dayOfWeek = firstDay.getDay()
@@ -136,14 +125,31 @@ export default {
       return dateTimeFormatter(tempDate, this.i18n[this.calendar.options.locale].monthFormat)
     }
   },
+  mounted: function () {
+    this.setShowsItem()
+  },
   methods: {
+    setShowsItem () {
+      let self = this
+      self.showItemIsSet = false
+      let tempDate = Date.parse(new Date(`${this.calendar.params.curYear}/${this.calendar.params.curMonth+1}/01`))
+      let currentMonth = dateTimeFormatter(tempDate, 'M')
+      this.shows.forEach((show) => {
+        if (show.month == currentMonth) {
+          self.showsItem = show
+          self.showItemIsSet = true
+        }
+      })
+    },
     nextMonth () {
       this.$EventCalendar.nextMonth()
       this.$emit('month-changed', this.curYearMonth)
+      this.setShowsItem()
     },
     preMonth () {
       this.$EventCalendar.preMonth()
       this.$emit('month-changed', this.curYearMonth)
+      this.setShowsItem()
     },
     handleChangeCurday (date) {
       if (date.status) {

@@ -36,14 +36,26 @@ export default {
       },
       shows: [
         {
+          nbscreening: 4,
+          month: 8
+        },
+        {
           nbscreening: 2,
-          month: 10
+          month: 9
         },
         {
           nbscreening: 1,
           month: 10
+        },
+        {
+          nbscreening: 3,
+          month: 11
+        },
+        {
+          nbscreening: 0,
+          month: 12
         }
-      ]
+      ],
     }
   },
   props: {
