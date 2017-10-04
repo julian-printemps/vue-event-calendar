@@ -1,13 +1,15 @@
 <template>
   <div class="cal-wrapper">
     <div class="cal-header">
-      <div class="l" @click="preMonth"><div class="arrow-left icon">&nbsp</div></div>
+      <div class="l" @click="preMonth"><div class="arrow-left icon">&nbsp</div><span>{{preMonthDisplay}}</span></div>
       <div class="title">{{curYearMonth}}</div>
-      <div class="r" @click="nextMonth"><div class="arrow-right icon">&nbsp</div></div>
+      <div class="r" @click="nextMonth"><div class="arrow-right icon">&nbsp</div><span>{{nextMonthDisplay}}</span></div>
     </div>
-    <section class="cal-shows">
-      <h3 class="cal-shows--title">{{shows}}</h3>
-    </section>
+    <ul class="cal-shows">
+      <li class="cal-shows--item" v-for="item in showsList">
+        上映回数<b>{{ item.nbscreening }}回</b> <strong>残り開催可能数<b>{{ screeningPossibilities(item.nbscreening) }}回</b></strong>
+      </li>
+    </ul>
     <div class="cal-body">
       <div class="weeks">
         <span
@@ -49,7 +51,7 @@ export default {
     }
   },
   props: {
-    shows: Object,
+    shows: Array,
     events: {
       type: Array,
       required: true
@@ -64,6 +66,19 @@ export default {
     }
   },
   computed: {
+    showsList () {
+      let showsList = []
+      let tempDate = Date.parse(new Date())
+      let currentMonth = dateTimeFormatter(tempDate, 'M')
+      this.shows.forEach((show) => {
+        if (show.month == currentMonth) {
+          let possibilities = 4 - show.nbscreening
+          showsList.push(show)
+        }
+      })
+      console.log(showsList);
+      return showsList
+    },
     dayList () {
         let firstDay = new Date(this.calendar.params.curYear, this.calendar.params.curMonth, 1)
         let dayOfWeek = firstDay.getDay()
@@ -111,6 +126,14 @@ export default {
     },
     customColor () {
       return this.calendar.options.color
+    },
+    preMonthDisplay () {
+      let tempDate = Date.parse(new Date(`${this.calendar.params.curYear}/${this.calendar.params.curMonth}/01`))
+      return dateTimeFormatter(tempDate, this.i18n[this.calendar.options.locale].monthFormat)
+    },
+    nextMonthDisplay () {
+      let tempDate = Date.parse(new Date(`${this.calendar.params.curYear}/${this.calendar.params.curMonth+2}/01`))
+      return dateTimeFormatter(tempDate, this.i18n[this.calendar.options.locale].monthFormat)
     }
   },
   methods: {
@@ -126,6 +149,9 @@ export default {
       if (date.status) {
         this.$emit('cur-day-changed', date.date)
       }
+    },
+    screeningPossibilities (nbscreening) {
+      return 4 - nbscreening
     }
   }
 }

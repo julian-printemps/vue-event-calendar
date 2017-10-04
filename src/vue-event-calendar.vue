@@ -1,8 +1,7 @@
 <template>
   <div class="__vev_calendar-wrapper">
     <cal-panel
-      :shows="shows"
-      :events="events"
+      :shows="shows" :events="events"
       :calendar="calendarOptions"
       :selectedDay='selectedDayEvents.date'
       @cur-day-changed="handleChangeCurDay"
@@ -34,7 +33,17 @@ export default {
       selectedDayEvents: {
         date: 'all',
         events: this.events || []  //default show all event
-      }
+      },
+      shows: [
+        {
+          nbscreening: 2,
+          month: 10
+        },
+        {
+          nbscreening: 1,
+          month: 10
+        }
+      ]
     }
   },
   props: {
@@ -53,7 +62,7 @@ export default {
         return validate
       }
     },
-    shows: Object,
+    // shows: Array,
     nationaldays: Array
   },
   computed: {
@@ -64,7 +73,7 @@ export default {
       } else {
         return {
           options: {
-            locale: 'en', //zh
+            locale: 'ja', //zh
             color: ' #f29543'
           },
           params: {
@@ -148,6 +157,10 @@ export default {
 @gray-dark: #b1b1b1;
 @large-padding: 15px;
 @small-padding: 10px;
+@red_01: #ff2544;
+@red_02: #fff5f3;
+@main_text: #50656f;
+@grey_03: #e7e7e7;
 
 @icon-border-size: 1px;
 @media screen and (min-width: 768px) {
@@ -216,7 +229,7 @@ export default {
       // box-shadow: 0 6px 5px rgba(0,0,0,.1);
       font-weight: 500;
       overflow: hidden;
-      padding-bottom: 10px;
+      // padding-bottom: 10px;
       &>div{
         float: left;
         line-height: 20px;
@@ -232,6 +245,14 @@ export default {
         cursor: pointer;
         user-select: none;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        & span {
+          position: relative;
+          bottom: -1px;
+          display: block;
+          padding-left: 30px;
+          color: #8ea0a8;
+          font-size: 13px;
+        }
       }
       .r{
         text-align: right;
@@ -239,6 +260,14 @@ export default {
         cursor: pointer;
         user-select: none;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        & span {
+          position: relative;
+          bottom: -1px;
+          display: block;
+          padding-right: 30px;
+          color: #8ea0a8;
+          font-size: 13px;
+        }
       }
     }
     .cal-body{
@@ -400,6 +429,33 @@ export default {
   h3, p{
     margin: 0;
     padding: 0;
+  }
+
+  .cal-shows {
+    background-color: @red_02;
+    padding: 3px;
+    margin: 0;
+    border-bottom: 1px solid @grey_03;
+
+    &--item {
+      display: block;
+      text-align: center;
+      color: @main_text;
+      font-size: 12px;
+      line-height: 16px;
+      padding: 2px 0;
+
+      & b {
+        font-weight: bold;
+      }
+
+      & strong {
+        display: inline-block;
+        margin-left: 16px;
+        font-weight: normal;
+        color: @red_01;
+      }
+    }
   }
 }
 
