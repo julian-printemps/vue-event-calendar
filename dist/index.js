@@ -503,6 +503,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -517,6 +520,7 @@ var inBrowser = typeof window !== 'undefined';
   },
 
   props: {
+    shows: Object,
     events: {
       type: Array,
       required: true
@@ -628,6 +632,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -665,7 +670,9 @@ var inBrowser = typeof window !== 'undefined';
         });
         return validate;
       }
-    }
+    },
+    shows: Object,
+    nationaldays: Array
   },
   computed: {
     calendarOptions: function calendarOptions() {
@@ -968,6 +975,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "__vev_calendar-wrapper"
   }, [_c('cal-panel', {
     attrs: {
+      "shows": _vm.shows,
       "events": _vm.events,
       "calendar": _vm.calendarOptions,
       "selectedDay": _vm.selectedDayEvents.date
@@ -1012,7 +1020,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "arrow-right icon"
-  }, [_vm._v(" ")])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(" ")])])]), _vm._v(" "), _c('section', {
+    staticClass: "cal-shows"
+  }, [_c('h3', {
+    staticClass: "cal-shows--title"
+  }, [_vm._v(_vm._s(_vm.shows))])]), _vm._v(" "), _c('div', {
     staticClass: "cal-body"
   }, [_c('div', {
     staticClass: "weeks"

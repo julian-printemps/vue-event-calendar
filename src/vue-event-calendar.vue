@@ -26,7 +26,7 @@ const inBrowser = typeof window !== 'undefined'
 export default {
   name: 'vue-event-calendar',
   components: {
-    'cal-events': calEvents
+    'cal-events': calEvents,
     'cal-panel': calPanel
   },
   data () {
