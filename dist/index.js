@@ -518,6 +518,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -536,6 +538,7 @@ var inBrowser = typeof window !== 'undefined';
   props: {
     shows: Array,
     nationaldays: Array,
+    disableddays: Array,
     events: {
       type: Array,
       required: true
@@ -594,6 +597,13 @@ var inBrowser = typeof window !== 'undefined';
             tempItem.desc = '';
           }
         });
+        this.disableddays.forEach(function (day) {
+          if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__tools_js__["a" /* isEqualDateStr */])(day.date, tempItem.date)) {
+            tempItem.isDisabled = true;
+            tempItem.title = '';
+            tempItem.desc = '';
+          }
+        });
         tempArr.push(tempItem);
       }
       return tempArr;
@@ -646,6 +656,9 @@ var inBrowser = typeof window !== 'undefined';
     },
     handleChangeCurday: function handleChangeCurday(date) {
       if (date.status) {
+        if (date.isDisabled) {
+          date.date.isDisabled = true;
+        }
         this.$emit('cur-day-changed', date.date);
       }
     },
@@ -757,7 +770,8 @@ var inBrowser = typeof window !== 'undefined';
 
     },
     shows: Array,
-    nationaldays: Array
+    nationaldays: Array,
+    disableddays: Array
   },
   computed: {
     calendarOptions: function calendarOptions() {
@@ -804,13 +818,16 @@ var inBrowser = typeof window !== 'undefined';
       var events = this.events.filter(function (event) {
         return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools_js__["a" /* isEqualDateStr */])(event.date, date);
       });
-      if (events.length > 0) {
-        this.selectedDayEvents = {
-          date: date,
-          events: events
-        };
-      }
-      this.$emit('day-changed', {
+      this.selectedDayEvents = {
+        date: date,
+        events: events
+        // if (events.length > 0) {
+        //   this.selectedDayEvents = {
+        //     date: date,
+        //     events: events
+        //   }
+        // }
+      };this.$emit('day-changed', {
         date: date,
         events: events
       });
@@ -1063,6 +1080,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "shows": _vm.shows,
       "events": _vm.events,
       "nationaldays": _vm.nationaldays,
+      "disableddays": _vm.disableddays,
       "calendar": _vm.calendarOptions,
       "selectedDay": _vm.selectedDayEvents.date
     },
@@ -1126,7 +1144,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: ( _obj = {
         today: date.status ? (_vm.today == date.date) : false,
           event: date.status ? (date.isEvent == true) : false,
-          nationalday: date.status ? (date.isNationalday == true) : false
+          nationalday: date.status ? (date.isNationalday == true) : false,
+          isdisabled: date.status ? (date.isDisabled == true) : false
       }, _obj[_vm.calendar.options.className] = (date.date == _vm.selectedDay), _obj )
     }, [_c('p', {
       staticClass: "date-num",
@@ -1137,10 +1156,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v("\n          " + _vm._s(date.status ? date.date.split('/')[2] : ' '))]), _vm._v(" "), (date.status ? (_vm.today == date.date) : false) ? _c('span', {
       staticClass: "is-today"
-    }) : _vm._e(), _vm._v(" "), (date.status ? (date.isEvent == true) : false) ? _c('span', {
+    }) : _vm._e(), _vm._v(" "), (date.status ? (date.isEvent) : false) ? _c('span', {
       staticClass: "is-event"
-    }) : _vm._e(), _vm._v(" "), (date.status ? (date.isNationalday == true) : false) ? _c('span', {
+    }) : _vm._e(), _vm._v(" "), (date.status ? (date.isNationalday) : false) ? _c('span', {
       staticClass: "is-nationalday"
+    }) : _vm._e(), _vm._v(" "), (date.status ? (date.isDisabled) : false) ? _c('span', {
+      staticClass: "is-disabled"
     }) : _vm._e()])
     var _obj;
   }))])])
