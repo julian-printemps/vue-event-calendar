@@ -24,14 +24,16 @@
             today: date.status ? (today == date.date) : false,
             event: date.status ? (date.isEvent == true) : false,
             nationalday: date.status ? (date.isNationalday == true) : false,
+            isdisabled: date.status ? (date.isDisabled == true) : false,
             [calendar.options.className] : (date.date == selectedDay)
           }">
           <p class="date-num"
             @click="handleChangeCurday(date)">
             {{date.status ? date.date.split('/')[2] : '&nbsp'}}</p>
           <span v-if="date.status ? (today == date.date) : false" class="is-today"></span>
-          <span v-if="date.status ? (date.isEvent == true) : false" class="is-event"></span>
-          <span v-if="date.status ? (date.isNationalday == true) : false" class="is-nationalday"></span>
+          <span v-if="date.status ? (date.isEvent) : false" class="is-event"></span>
+          <span v-if="date.status ? (date.isNationalday) : false" class="is-nationalday"></span>
+          <span v-if="date.status ? (date.isDisabled) : false" class="is-disabled"></span>
         </div>
       </div>
     </div>
@@ -55,6 +57,7 @@ export default {
   props: {
     shows: Array,
     nationaldays: Array,
+    disableddays: Array,
     events: {
       type: Array,
       required: true
@@ -110,6 +113,13 @@ export default {
                 tempItem.desc = ''
               }
             })
+            this.disableddays.forEach((day) => {
+              if (isEqualDateStr(day.date, tempItem.date)) {
+                tempItem.isDisabled = true
+                tempItem.title = ''
+                tempItem.desc = ''
+              }
+            })
             tempArr.push(tempItem)
         }
         return tempArr
@@ -162,6 +172,9 @@ export default {
     },
     handleChangeCurday (date) {
       if (date.status) {
+        if (date.isDisabled) {
+          date.date.isDisabled = true
+        }
         this.$emit('cur-day-changed', date.date)
       }
     },

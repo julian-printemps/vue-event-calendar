@@ -1,7 +1,7 @@
 <template>
   <div class="__vev_calendar-wrapper">
     <cal-panel
-      :shows="shows" :events="events" :nationaldays="nationaldays"
+      :shows="shows" :events="events" :nationaldays="nationaldays" :disableddays="disableddays"
       :calendar="calendarOptions"
       :selectedDay='selectedDayEvents.date'
       @cur-day-changed="handleChangeCurDay"
@@ -87,7 +87,8 @@ export default {
     // }
     },
     shows: Array,
-    nationaldays: Array
+    nationaldays: Array,
+    disableddays: Array
   },
   computed: {
     calendarOptions () {
@@ -133,12 +134,16 @@ export default {
       let events = this.events.filter(function(event) {
         return isEqualDateStr(event.date, date)
       })
-      if (events.length > 0) {
-        this.selectedDayEvents = {
-          date: date,
-          events: events
-        }
+      this.selectedDayEvents = {
+        date: date,
+        events: events
       }
+      // if (events.length > 0) {
+      //   this.selectedDayEvents = {
+      //     date: date,
+      //     events: events
+      //   }
+      // }
       this.$emit('day-changed', {
         date: date,
         events: events
