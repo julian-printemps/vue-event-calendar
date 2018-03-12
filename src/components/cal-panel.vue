@@ -173,9 +173,9 @@ export default {
     handleChangeCurday (date) {
       if (date.status) {
         if (date.isDisabled) {
-          date.date.isDisabled = true
+          date.isDisabled = true
         }
-        this.$emit('cur-day-changed', date.date)
+        this.$emit('cur-day-changed', date)
       }
     },
     screeningPossibilities (nbscreening) {

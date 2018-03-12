@@ -132,10 +132,10 @@ export default {
   methods: {
     handleChangeCurDay (date) {
       let events = this.events.filter(function(event) {
-        return isEqualDateStr(event.date, date)
+        return isEqualDateStr(event.date, date.date)
       })
       this.selectedDayEvents = {
-        date: date,
+        date: date.date,
         events: events
       }
       // if (events.length > 0) {
@@ -144,10 +144,16 @@ export default {
       //     events: events
       //   }
       // }
-      this.$emit('day-changed', {
-        date: date,
-        events: events
-      })
+      if (date.isDisabled) {
+        this.$emit('day-disabled', {
+          date: date.date
+        })
+      } else {
+        this.$emit('day-changed', {
+          date: date.date,
+          events: events
+        })
+      }
     },
     handleMonthChanged (yearMonth) {
       this.$emit('month-changed', yearMonth)

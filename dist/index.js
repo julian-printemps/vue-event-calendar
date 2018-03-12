@@ -657,9 +657,9 @@ var inBrowser = typeof window !== 'undefined';
     handleChangeCurday: function handleChangeCurday(date) {
       if (date.status) {
         if (date.isDisabled) {
-          date.date.isDisabled = true;
+          date.isDisabled = true;
         }
-        this.$emit('cur-day-changed', date.date);
+        this.$emit('cur-day-changed', date);
       }
     },
     screeningPossibilities: function screeningPossibilities(nbscreening) {
@@ -816,10 +816,10 @@ var inBrowser = typeof window !== 'undefined';
   methods: {
     handleChangeCurDay: function handleChangeCurDay(date) {
       var events = this.events.filter(function (event) {
-        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools_js__["a" /* isEqualDateStr */])(event.date, date);
+        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools_js__["a" /* isEqualDateStr */])(event.date, date.date);
       });
       this.selectedDayEvents = {
-        date: date,
+        date: date.date,
         events: events
         // if (events.length > 0) {
         //   this.selectedDayEvents = {
@@ -827,10 +827,16 @@ var inBrowser = typeof window !== 'undefined';
         //     events: events
         //   }
         // }
-      };this.$emit('day-changed', {
-        date: date,
-        events: events
-      });
+      };if (date.isDisabled) {
+        this.$emit('day-disabled', {
+          date: date.date
+        });
+      } else {
+        this.$emit('day-changed', {
+          date: date.date,
+          events: events
+        });
+      }
     },
     handleMonthChanged: function handleMonthChanged(yearMonth) {
       this.$emit('month-changed', yearMonth);
