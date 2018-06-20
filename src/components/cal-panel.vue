@@ -153,12 +153,14 @@ export default {
       self.showItemIsSet = false
       let tempDate = Date.parse(new Date(`${this.calendar.params.curYear}/${this.calendar.params.curMonth+1}/01`))
       let currentMonth = dateTimeFormatter(tempDate, 'M')
-      this.shows.forEach((show) => {
-        if (show.month == currentMonth) {
-          self.showsItem = show
-          self.showItemIsSet = true
-        }
-      })
+      if (this.shows !== undefined) {
+        this.shows.forEach((show) => {
+          if (show.month == currentMonth) {
+            self.showsItem = show
+            self.showItemIsSet = true
+          }
+        })
+      }
     },
     nextMonth () {
       this.$EventCalendar.nextMonth()
