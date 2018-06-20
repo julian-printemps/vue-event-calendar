@@ -637,12 +637,14 @@ var inBrowser = typeof window !== 'undefined';
       self.showItemIsSet = false;
       var tempDate = Date.parse(new Date(this.calendar.params.curYear + '/' + (this.calendar.params.curMonth + 1) + '/01'));
       var currentMonth = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__tools_js__["b" /* dateTimeFormatter */])(tempDate, 'M');
-      this.shows.forEach(function (show) {
-        if (show.month == currentMonth) {
-          self.showsItem = show;
-          self.showItemIsSet = true;
-        }
-      });
+      if (this.shows !== undefined) {
+        this.shows.forEach(function (show) {
+          if (show.month == currentMonth) {
+            self.showsItem = show;
+            self.showItemIsSet = true;
+          }
+        });
+      }
     },
     nextMonth: function nextMonth() {
       this.$EventCalendar.nextMonth();
